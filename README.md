@@ -188,7 +188,7 @@ python3 -m unittest discover -s tests -t . -v
 
 ## Current V1 status
 
-Transparent status as of 2026-09-05 (`TASK-001`–`TASK-009` DONE):
+Transparent status as of 2026-09-05 (`TASK-001`–`TASK-009` DONE, **v1.0.0 released** — `forge-template` branch tagged and frozen):
 
 Implemented:
 
@@ -201,7 +201,7 @@ Implemented:
 Validated:
 
 - **Real cross-agent cold-start continuation.** Agent1 implemented the first half of `tools/forge_verify.py` and stopped at `checkpoint-003`; Agent2 (a different agent, no prior conversation) implemented the two remaining stubs and real tests from files + git alone, verified green, and recorded the outcome in `checkpoint-004.md`. The drill passed: a fresh agent reconstructed the project state and continued the work without the previous conversation.
-- **Installable template.** ADR-004 executed: `forge-template` branch with 16 sanitized files; adoption verified end-to-end in a fresh repo (fetch → checkout → commit clean).
+- **Installable template.** ADR-004 executed: `forge-template` branch with 16 sanitized files; adoption verified end-to-end twice — once against the local branch, once against the public GitHub URL in a fresh repo (fetch → checkout → commit clean). Tagged `v1.0.0` and frozen: no feature additions until a real use case exposes a problem.
 
 ## Quick start
 

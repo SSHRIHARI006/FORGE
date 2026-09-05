@@ -8,7 +8,7 @@ Forge — portable, agent-agnostic project context layer (`.forge/` + `FORGE_SPE
 
 ## Current Task
 
-None IN_PROGRESS. TASK-008/009 DONE; ADR-004 executed (branch `a944298`) **and dogfooded** — template installed + initialized + implemented `dscan` in `../forge-dogfood/` (5 tests green). Dogfood fixes 1–4 applied to branch (`3e8299b`), NOT pushed (awaiting review). Latest checkpoint: `checkpoint-007.md`.
+None IN_PROGRESS — **V1 released** (`forge-template` v1.0.0, frozen). Mode: stabilization/release. Latest checkpoint: `checkpoint-008.md`.
 
 ## Goal
 
@@ -18,7 +18,7 @@ Prove a fresh repo was converted into a Forge-enabled project where a different 
 
 - `FORGE_SPEC.md` (17 FR / 5 NFR / 6 AC), `.forge/INIT.md`, `rules.md`, `tasks.md`, `state.md`
 - Decisions: ADR-001 (filesystem over DB), ADR-002 (single active agent), ADR-003 (agent-agnostic markdown), ADR-004 (dev repo vs template split — executed 2026-09-05)
-- Skills: testing, security, specification; `taste/preferences.md`; checkpoints 001..007; `AGENTS.md` adapter
+- Skills: testing, security, specification; `taste/preferences.md`; checkpoints 001..008; `AGENTS.md` adapter
 - Git: master HEAD `502e8c5` + `forge-template` branch `a944298` (16 files) — see `git log --oneline -10`, `git branch -v`
 - TASK-008: `tools/forge_verify.py` (layout + ID counts + git state + KICKOFF freshness), `tests/test_forge_verify.py` (9 tests)
 - TASK-009 (Agent2): `check_git_state()` + `check_kickoff_freshness()` implemented, wired into `verify()`/`main()`; 2 stub tests replaced with 5 real tests; continuation assessment recorded in `state.md` + `checkpoint-004.md`
@@ -51,14 +51,14 @@ None. Open user confirmations: sign-off on `FORGE_SPEC.md` accuracy (no issues f
 - ADR-001: filesystem/markdown convention, no DB/runtime in V1.
 - ADR-002: one active agent at a time; file-based handoff via KICKOFF/state/tasks.
 - ADR-003: agent-agnostic markdown; `AGENTS.md` is a thin adapter, Forge is source of truth.
-- ADR-004: executed 2026-09-05 — clean template on the `forge-template` branch (16 files); branch pushed (`a944298`) then fixed after dogfood (`3e8299b` — README install for fresh repos, no dev FR/AC IDs in tasks, AGENTS optional spec, INIT quick start). Fix commit not pushed yet — awaiting review.
+- ADR-004: executed 2026-09-05 — clean template on `forge-template`; pushed `a944298` → fixed `3e8299b` (README install for fresh repos, no dev FR/AC IDs, AGENTS optional spec, INIT quick start) → **tagged v1.0.0 and frozen** per user direction.
 - Pilot stays dependency-free (stdlib unittest; no pytest).
 
 ## Next Action
 
-1. ~~Push forge-template~~ (done `a944298`), ~~Dogfood~~ (done, `checkpoint-006.md`), ~~Apply fixes 1–4~~ (done, `checkpoint-007.md`).
-2. **On user approval: `git push origin forge-template`** to publish fix commit `3e8299b`; then re-run the GitHub-URL adoption test.
-3. Get sign-off on spec accuracy + `SPEC.md` retention. Note: local master ahead of remote master (`239ecc3`); pushing master is a separate user decision.
+1. ~~Push forge-template~~ (done), ~~GitHub adoption test~~ (passed), ~~Push master~~ (done), ~~Tag v1.0.0~~ (done, frozen).
+2. Low-priority: user sign-off on spec accuracy + `SPEC.md` retention.
+3. Watch for real use cases before un-freezing the template; route any template fixes through: branch update → sanitize → adoption test → push.
 
 ## Constraints
 
