@@ -70,20 +70,30 @@ FAIL (exit 1)
 ```
 Diagnosis: not a code defect — `check_git_state()` correctly reports uncommitted edits. Fixed by committing (user-approved).
 
-TASK-009 final run 2026-09-05 (after commit, clean tree) — **current evidence**:
+TASK-009 final run 2026-09-05 (clean tree at `bbcf83d`) — **current evidence**:
 ```text
 $ python3 -m unittest discover -s tests -t . -v
-... (9 tests, see below for full output)
+test_git_state_reports_head_and_clean (tests.test_forge_verify.TestAgent2.test_git_state_reports_head_and_clean) ... ok
+test_kickoff_freshness_detects_missing_checkpoint_ref (tests.test_forge_verify.TestAgent2.test_kickoff_freshness_detects_missing_checkpoint_ref) ... ok
+test_kickoff_freshness_detects_stale_git_claim (tests.test_forge_verify.TestAgent2.test_kickoff_freshness_detects_stale_git_claim) ... ok
+test_kickoff_freshness_ok (tests.test_forge_verify.TestAgent2.test_kickoff_freshness_ok) ... ok
+test_verify_includes_git_and_kickoff (tests.test_forge_verify.TestAgent2.test_verify_includes_git_and_kickoff) ... ok
+test_adr_skill_minimums (tests.test_forge_verify.TestForgeVerifyAgent1.test_adr_skill_minimums) ... ok
+test_id_counts (tests.test_forge_verify.TestForgeVerifyAgent1.test_id_counts) ... ok
+test_required_files_present (tests.test_forge_verify.TestForgeVerifyAgent1.test_required_files_present) ... ok
+test_verify_ok (tests.test_forge_verify.TestForgeVerifyAgent1.test_verify_ok) ... ok
+----------------------------------------------------------------------
+Ran 9 tests in 0.021s
+OK
 $ python3 tools/forge_verify.py
 root: /home/shrihari/Desktop/forge
 counts: {'FR': 17, 'NFR': 5, 'AC': 6, 'total': 28} ids_ok=True
 layout: missing_files=[] missing_dirs=[] adrs=4 skills=3 checkpoints=4
-git: present=True clean=True rev=ab7e70e changes=0
-kickoff: ok=True checkpoints_ref=['checkpoint-001.md', 'checkpoint-002.md', 'checkpoint-003.md', 'checkpoint-004.md'] issues=[]
+git: present=True clean=True rev=bbcf83d changes=0
+kickoff: ok=True checkpoints_ref=['checkpoint-004.md'] issues=[]
 OK
 $ echo $? → 0
 ```
-Full unittest output was pasted during the TASK-009 close-out (9 tests OK); see git commit for the exact transcript.
 
 ## Next Action
 
