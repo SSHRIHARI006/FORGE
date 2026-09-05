@@ -2,7 +2,7 @@
 
 ## Active Task
 
-None IN_PROGRESS — TASK-008 DONE and TASK-009 DONE (2026-09-05, Agent2 continuation drill). Single-active-task invariant held throughout (transitions: TASK-008 IN_PROGRESS → TASK-009 IN_PROGRESS → both DONE). Next work awaits user direction (e.g. ADR-004 template split execution).
+None IN_PROGRESS — TASK-008/009 DONE (2026-09-05); ADR-004 executed (template split done). Single-active-task invariant held throughout. Next work awaits user direction (e.g. push `forge-template`, dogfood the template).
 
 ## Current Progress
 
@@ -11,7 +11,7 @@ None IN_PROGRESS — TASK-008 DONE and TASK-009 DONE (2026-09-05, Agent2 continu
 - Wired both checks into `verify()` and `main()` CLI output (`git:` and `kickoff:` lines).
 - Replaced the 2 stub-expectation tests with 5 real tests (git head+clean, kickoff ok, stale-claim detection, missing-checkpoint detection, verify includes git+kickoff). Suite: 4 Agent1 tests + 5 Agent2 tests = 9.
 - During development the new checks correctly FAILED on the dirty working tree (uncommitted edits to tools/ and tests/): `git clean=False changes=2`, 3 test failures. Diagnosed as expected behavior; after user-approved commit the tree is clean and everything is green.
-- ADR-004 (dev repo vs template split) remains deferred per its own status — execution not started.
+- ADR-004 executed 2026-09-05: created clean `forge-template` branch (commit `a944298`, 16 files) + local mirror `../forge-template/`; adoption verified in a fresh repo at `/tmp/forge-adoption-test`; full details in `checkpoint-005.md`.
 
 ## Completed
 
@@ -31,7 +31,8 @@ None blocking. Open user confirmations: `FORGE_SPEC.md` accuracy sign-off (no is
 
 ## Recent Changes
 
-- 2026-09-05 TASK-009 (Agent2): `tools/forge_verify.py` — implemented `check_git_state()` and `check_kickoff_freshness()`, integrated into `verify()`/`main()`; `tests/test_forge_verify.py` — 2 stub tests replaced by 5 real tests; `tasks.md`/`state.md`/`KICKOFF.md` updated; `checkpoints/checkpoint-004.md` created; `README.md` updated (stub caveat removed, checkpoint-004 in layout, status section now reflects the passed drill).
+- 2026-09-05 TASK-009 (Agent2): `tools/forge_verify.py` — implemented `check_git_state()` and `check_kickoff_freshness()`, integrated into `verify()`/`main()`; `tests/test_forge_verify.py` — 2 stub tests replaced by 5 real tests; `tasks.md`/`state.md`/`KICKOFF.md` updated; `checkpoints/checkpoint-004.md` created; `README.md` updated.
+- 2026-09-05 ADR-004 executed: `forge-template` branch `a944298` created (16 sanitized files), local mirror `../forge-template/`, adoption test in `/tmp/forge-adoption-test` passed, `checkpoint-005.md` created, ADR-004 status updated to executed.
 
 ## Verification
 
@@ -97,9 +98,9 @@ $ echo $? → 0
 
 ## Next Action
 
-1. (Optional) Report the drill outcome to the user and request sign-off on `FORGE_SPEC.md` accuracy + `SPEC.md` retention.
-2. When authorized: execute ADR-004 — extract `forge-template` (`.forge/` + README only) into a second repo.
-3. Otherwise: await user direction for the next task (V1 scope is complete: init → implement → verify → handoff → continuation all proven).
+1. On user go-ahead: `git push origin forge-template` (branch is currently local only).
+2. Get sign-off on `FORGE_SPEC.md` accuracy + `SPEC.md` retention.
+3. Dogfood the template in a real project (template README Option A); feed issues back to dev.
 
 ## Important Context
 

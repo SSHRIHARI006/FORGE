@@ -107,6 +107,20 @@ Based on `SPEC.md` §2 and this repo today:
 
 Agent entry order (per `AGENTS.md`): `FORGE_SPEC.md` → `KICKOFF.md` → `state.md` → `tasks.md` → `rules.md` → relevant `decisions/` + `skills/` + `taste/` → `git status` / `git diff` / `git log`.
 
+## Installing Forge in your project (forge-template)
+
+The installable artifact lives on the **`forge-template` branch** of this repo (created per ADR-004): `README.md`, `AGENTS.md`, `.gitignore`, and a sanitized `.forge/` — no dev state, tests, or tools. A local mirror lives at `../forge-template/`.
+
+To adopt it into your project:
+
+```bash
+# From your project root (your repo must already exist)
+git fetch origin forge-template:forge-template
+git checkout forge-template -- .   # or select files explicitly
+```
+
+Then commit and run initialization: tell your coding agent to read `.forge/INIT.md` and follow it exactly (discovery → interview → challenge → confirmation → context creation). See the template's own `README.md` for the full install + working procedure.
+
 ## Multi-agent handoff
 
 The strongest test of Forge is continuity, not parallelism. V1 intentionally supports **one active coding agent at a time** (ADR-002). There is no dedicated handoff file; handoff lives in `KICKOFF.md` + `state.md` + `tasks.md` plus git history.
@@ -181,12 +195,13 @@ Implemented:
 - Forge context structure (`.forge/` + `FORGE_SPEC.md` + `AGENTS.md` adapter)
 - Initialization instructions (`.forge/INIT.md`, 20 binding behaviors)
 - Living specification (17 FR / 5 NFR / 6 AC), project rules, tasks, state, kickoff
-- 4 ADRs, 3 skills, taste preferences, 4 checkpoints
+- 4 ADRs, 3 skills, taste preferences, 5 checkpoints
 - Structural verification (`tools/forge_verify.py` + tests, green): layout, ID counts, git state, KICKOFF freshness
 
 Validated:
 
 - **Real cross-agent cold-start continuation.** Agent1 implemented the first half of `tools/forge_verify.py` and stopped at `checkpoint-003`; Agent2 (a different agent, no prior conversation) implemented the two remaining stubs and real tests from files + git alone, verified green, and recorded the outcome in `checkpoint-004.md`. The drill passed: a fresh agent reconstructed the project state and continued the work without the previous conversation.
+- **Installable template.** ADR-004 executed: `forge-template` branch with 16 sanitized files; adoption verified end-to-end in a fresh repo (fetch → checkout → commit clean).
 
 ## Quick start
 
