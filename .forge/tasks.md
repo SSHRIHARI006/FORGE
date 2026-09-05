@@ -112,14 +112,30 @@ Verification:
 
 ## TASK-008
 
-Status: READY
+Status: IN_PROGRESS (Agent1 partial 2026-09-05 — layout + ID counts done, git/KICKOFF checks deferred to TASK-009)
 
 Goal:
-Dogfood: use Forge context to implement the next real change in this repo (or a pilot repo), following BUILD/VERIFY/ENGINEER with recorded evidence, then perform a cross-agent handoff drill.
+Dogfood pilot Agent1: create small Python `tools/forge_verify.py` that checks Forge V1 structure (required files present, FR/NFR/AC counts, ADR/skill counts) with `tests/test_forge_verify.py`. Leave git-integration + KICKOFF-freshness checks as stubs for Agent2. Follow BUILD/VERIFY with recorded evidence, then handoff.
 
 Requirements:
 FR-015
 AC-003, AC-004
 
 Verification:
-`tbd per pilot task, e.g. pytest tests/ / npm test` — must paste real command output into `state.md` before marking DONE.
+`python3 -m unittest discover -s tests -v` — must paste real command output into `state.md` before marking DONE. Agent1 stop point: layout/ID tests green, 2 stubs raise NotImplementedError.
+
+---
+
+## TASK-009
+
+Status: READY
+
+Goal:
+Dogfood pilot Agent2 (handoff continuation, no prior conversation): implement `check_git_state()` and `check_kickoff_freshness()` stubs in `tools/forge_verify.py`, add real tests replacing the NotImplementedError expectations, re-run verification green, update state/KICKOFF, prove continuation from files + git alone.
+
+Requirements:
+FR-014, FR-015
+AC-003, AC-004, AC-005
+
+Verification:
+`python3 -m unittest discover -s tests -t . -v && python3 tools/forge_verify.py` — paste real output into `state.md`. Then mark TASK-008 DONE (Agent1 part verified) and TASK-009 DONE, or keep single-IN_PROGRESS discipline by completing TASK-008 first.
