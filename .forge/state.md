@@ -32,6 +32,7 @@ None blocking. Agent1 intentional remainder for Agent2: `check_git_state()` and 
 - 2026-09-05: Initial Forge enablement — full `.forge/` tree + `FORGE_SPEC.md` + `AGENTS.md` created from `SPEC.md` V1 spec. No application code touched (none exists).
 - 2026-09-05: `git init && git add -A && git commit -m "feat: initialize Forge V1 context layer"` → `14fb107`. KICKOFF checkpoint inconsistency resolved (checkpoint-002 exists on disk; KICKOFF line updated, no fake file).
 - 2026-09-05 TASK-008 Agent1: `tools/forge_verify.py`, `tests/test_forge_verify.py` (+ `__init__.py`) created, 6 tests green. TASK-008 IN_PROGRESS, TASK-009 READY. Checkpoint-003 created as Agent1 stop point.
+- 2026-09-05: `README.md` written per user direction (accurate to repo: no CLI, pilot still validating continuation, commands verified). Not a TASK scope change; TASK-008 remains IN_PROGRESS.
 
 ## Verification
 
