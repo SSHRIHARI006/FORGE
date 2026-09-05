@@ -12,6 +12,7 @@ None IN_PROGRESS — TASK-008/009 DONE (2026-09-05); ADR-004 executed (template 
 - Replaced the 2 stub-expectation tests with 5 real tests (git head+clean, kickoff ok, stale-claim detection, missing-checkpoint detection, verify includes git+kickoff). Suite: 4 Agent1 tests + 5 Agent2 tests = 9.
 - During development the new checks correctly FAILED on the dirty working tree (uncommitted edits to tools/ and tests/): `git clean=False changes=2`, 3 test failures. Diagnosed as expected behavior; after user-approved commit the tree is clean and everything is green.
 - ADR-004 executed 2026-09-05: created clean `forge-template` branch (commit `a944298`, 16 files) + local mirror `../forge-template/`; adoption verified in a fresh repo at `/tmp/forge-adoption-test`; branch pushed to origin 2026-09-05; full details in `checkpoint-005.md`.
+- Dogfood drill 2026-09-05: template installed into `../forge-dogfood/`, initialized per INIT.md, `dscan` (stdlib-only Python CLI) implemented with 5 green tests + recorded output, handoff committed (`2d5d22d`). Rough edges found (README fetch URL, placeholder tasks.md FR-IDs, AGENTS.md pre-spec order) recorded in `checkpoint-006.md`.
 
 ## Completed
 
@@ -98,9 +99,9 @@ $ echo $? → 0
 
 ## Next Action
 
-1. ~~Push forge-template~~ — done (remote refs/heads/forge-template = `a944298`). Note: local master is ahead of remote master (`239ecc3`); pushing master is a separate user decision.
+1. ~~Push forge-template~~ — done. ~~Dogfood~~ — done (`../forge-dogfood/`). Apply template fixes from `checkpoint-006.md` (README fetch URL, placeholder tasks.md FR-IDs, AGENTS.md "(if present)"), re-verify, push branch (ask user).
 2. Get sign-off on `FORGE_SPEC.md` accuracy + `SPEC.md` retention.
-3. Dogfood the template in a real project (template README Option A); feed issues back to dev.
+3. Note: local master is ahead of remote master (`239ecc3`); pushing master is a separate user decision.
 
 ## Important Context
 

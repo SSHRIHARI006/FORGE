@@ -8,7 +8,7 @@ Forge — portable, agent-agnostic project context layer (`.forge/` + `FORGE_SPE
 
 ## Current Task
 
-None IN_PROGRESS. TASK-008/009 DONE (2026-09-05); ADR-004 executed — the `forge-template` branch exists (`a944298`, 16 clean files). Latest checkpoint: `checkpoint-005.md`.
+None IN_PROGRESS. TASK-008/009 DONE; ADR-004 executed (branch `a944298`) **and dogfooded** — template installed + initialized + implemented `dscan` in `../forge-dogfood/` (5 tests green). Findings in `checkpoint-006.md`; template fixes pending. Latest checkpoint: `checkpoint-006.md`.
 
 ## Goal
 
@@ -18,7 +18,7 @@ Prove a fresh repo was converted into a Forge-enabled project where a different 
 
 - `FORGE_SPEC.md` (17 FR / 5 NFR / 6 AC), `.forge/INIT.md`, `rules.md`, `tasks.md`, `state.md`
 - Decisions: ADR-001 (filesystem over DB), ADR-002 (single active agent), ADR-003 (agent-agnostic markdown), ADR-004 (dev repo vs template split — executed 2026-09-05)
-- Skills: testing, security, specification; `taste/preferences.md`; checkpoints 001..005; `AGENTS.md` adapter
+- Skills: testing, security, specification; `taste/preferences.md`; checkpoints 001..006; `AGENTS.md` adapter
 - Git: master HEAD `502e8c5` + `forge-template` branch `a944298` (16 files) — see `git log --oneline -10`, `git branch -v`
 - TASK-008: `tools/forge_verify.py` (layout + ID counts + git state + KICKOFF freshness), `tests/test_forge_verify.py` (9 tests)
 - TASK-009 (Agent2): `check_git_state()` + `check_kickoff_freshness()` implemented, wired into `verify()`/`main()`; 2 stub tests replaced with 5 real tests; continuation assessment recorded in `state.md` + `checkpoint-004.md`
@@ -56,9 +56,9 @@ None. Open user confirmations: sign-off on `FORGE_SPEC.md` accuracy (no issues f
 
 ## Next Action
 
-1. ~~Push forge-template~~ — done (remote = `a944298`). Note: local master is ahead of remote master (`239ecc3`); pushing master is a separate user decision.
-2. Get sign-off on spec accuracy + `SPEC.md` retention.
-3. Dogfood the template in a real project (per template README Option A); feed issues back to dev.
+1. ~~Push forge-template~~ — done (remote = `a944298`). ~~Dogfood~~ — done (`../forge-dogfood/`, see `checkpoint-006.md`).
+2. Apply template fixes from dogfood findings (README fetch URL, placeholder tasks.md FR-IDs, AGENTS.md "(if present)"); update branch; re-verify; push (ask user).
+3. Get sign-off on spec accuracy + `SPEC.md` retention. Note: local master ahead of remote master (`239ecc3`); pushing master is a separate user decision.
 
 ## Constraints
 
