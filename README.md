@@ -76,7 +76,8 @@ Based on `SPEC.md` §2 and this repo today:
     ├── decisions/
     │   ├── ADR-001.md
     │   ├── ADR-002.md
-    │   └── ADR-003.md
+    │   ├── ADR-003.md
+    │   └── ADR-004.md
     ├── skills/
     │   ├── testing/SKILL.md
     │   ├── security/SKILL.md
@@ -87,7 +88,11 @@ Based on `SPEC.md` §2 and this repo today:
         ├── checkpoint-001.md
         ├── checkpoint-002.md
         ├── checkpoint-003.md
-        └── checkpoint-004.md
+        ├── checkpoint-004.md
+        ├── checkpoint-005.md
+        ├── checkpoint-006.md
+        ├── checkpoint-007.md
+        └── checkpoint-008.md
 ```
 
 | File | Purpose |
@@ -109,17 +114,23 @@ Agent entry order (per `AGENTS.md`): `FORGE_SPEC.md` → `KICKOFF.md` → `state
 
 ## Installing Forge in your project (forge-template)
 
-The installable artifact lives on the **`forge-template` branch** of this repo (created per ADR-004): `README.md`, `AGENTS.md`, `.gitignore`, and a sanitized `.forge/` — no dev state, tests, or tools. A local mirror lives at `../forge-template/`.
+The installable artifact lives on the **`forge-template` branch** of this repository (created per ADR-004): `README.md`, `AGENTS.md`, `.gitignore`, and a sanitized `.forge/` directory — free of dev state, tests, or tools.
 
-To adopt it into your project:
+To adopt Forge into your existing project (where `origin` is your own repository):
 
 ```bash
-# From your project root (your repo must already exist)
-git fetch origin forge-template:forge-template
-git checkout forge-template -- .   # or select files explicitly
+# One-time: add the Forge repository as a remote
+git remote add forge https://github.com/SSHRIHARI006/FORGE
+
+# Fetch the template branch from Forge
+git fetch forge forge-template
+
+# Adopt the template files into your working tree
+git checkout forge/forge-template -- .
 ```
 
-Then commit and run initialization: tell your coding agent to read `.forge/INIT.md` and follow it exactly (discovery → interview → challenge → confirmation → context creation). See the template's own `README.md` for the full install + working procedure.
+Then review, commit, and initialize: instruct your AI coding agent to read `.forge/INIT.md` and follow it exactly (read-only discovery → adaptive interview → challenge/recommendation → confirmation → context creation). See the template's own `README.md` for complete details.
+
 
 ## Multi-agent handoff
 
@@ -195,7 +206,7 @@ Implemented:
 - Forge context structure (`.forge/` + `FORGE_SPEC.md` + `AGENTS.md` adapter)
 - Initialization instructions (`.forge/INIT.md`, 20 binding behaviors)
 - Living specification (17 FR / 5 NFR / 6 AC), project rules, tasks, state, kickoff
-- 4 ADRs, 3 skills, taste preferences, 5 checkpoints
+- 4 ADRs, 3 skills, taste preferences, 8 checkpoints
 - Structural verification (`tools/forge_verify.py` + tests, green): layout, ID counts, git state, KICKOFF freshness
 
 Validated:

@@ -2,7 +2,7 @@
 
 ## Active Task
 
-None IN_PROGRESS — TASK-008/009 DONE (2026-09-05); ADR-004 executed (template split done). Single-active-task invariant held throughout. Next work awaits user direction (e.g. push `forge-template`, dogfood the template).
+None IN_PROGRESS — TASK-010 DONE (2026-09-05); v1.0.0 presentation polish, release prep, and unrelated adoption verification complete. Single-active-task invariant held throughout.
 
 ## Current Progress
 
@@ -15,6 +15,7 @@ None IN_PROGRESS — TASK-008/009 DONE (2026-09-05); ADR-004 executed (template 
 - Dogfood drill 2026-09-05: template installed into `../forge-dogfood/`, initialized per INIT.md, `dscan` (stdlib-only Python CLI) implemented with 5 green tests + recorded output, handoff committed (`2d5d22d`). Rough edges found (README fetch URL, placeholder tasks.md FR-IDs, AGENTS.md pre-spec order) recorded in `checkpoint-006.md`.
 - Template fixes 1–4 applied 2026-09-05 to branch `forge-template` (`3e8299b`): README install for fresh projects + public URL; tasks.md no dev FR/AC IDs; AGENTS.md marks FORGE_SPEC optional; INIT.md Quick Start; state.md dev-ref cleanup. Sanitization + fresh adoption test passed. Details: `checkpoint-007.md`.
 - **V1 released 2026-09-05**: `forge-template` pushed + GitHub adoption test passed (real URL, fresh repo, 16 files), `master` pushed (ahead 9), tag `v1.0.0` on `forge-template` tip `3e8299b`. Template **frozen** per user direction — no feature additions until a real use case exposes a problem. Details: `checkpoint-008.md`.
+- **TASK-010 completed 2026-09-05**: Cleaned root `README.md` presentation (Option A remote-add syntax, local mirror references removed, file tree synced), created `.forge/releases/v1.0.0.md`, executed unrelated real-world adoption test in `/tmp/forge-unrelated-adoption-test` (Inventory Service) with 100% clean adoption and initialization, checkpoint-009 recorded.
 
 ## Completed
 
@@ -26,7 +27,9 @@ None IN_PROGRESS — TASK-008/009 DONE (2026-09-05); ADR-004 executed (template 
 - TASK-006 DONE: `AGENTS.md` adapter.
 - TASK-007 DONE 2026-09-05: structural verification passed, checkpoint-002 recorded.
 - TASK-008 DONE 2026-09-05: dogfood pilot — `tools/forge_verify.py` + `tests/test_forge_verify.py` complete (Agent1 layout/ID checks + Agent2 git/KICKOFF checks), 9 tests green, `forge_verify.py` exits 0.
-- TASK-009 DONE 2026-09-05: Agent2 continuation drill — stubs implemented, real tests written, verification green, Forge context updated, checkpoint-004 recorded. Cold-start continuation proven (assessment below).
+- TASK-009 DONE 2026-09-05: Agent2 continuation drill — stubs implemented, real tests written, verification green, Forge context updated, checkpoint-004 recorded. Cold-start continuation proven.
+- TASK-010 DONE 2026-09-05: Public presentation polish (root README), release notes (.forge/releases/v1.0.0.md), and unrelated real-world adoption test verified clean. Checkpoint-009 recorded.
+
 
 ## Current Problem
 

@@ -8,20 +8,22 @@ Forge — portable, agent-agnostic project context layer (`.forge/` + `FORGE_SPE
 
 ## Current Task
 
-None IN_PROGRESS — **V1 released** (`forge-template` v1.0.0, frozen). Mode: stabilization/release. Latest checkpoint: `checkpoint-008.md`.
+None IN_PROGRESS — **V1 released & polished** (`forge-template` v1.0.0, frozen; TASK-010 complete). Mode: stabilization/release. Latest checkpoint: `checkpoint-009.md`.
 
 ## Goal
 
-Prove a fresh repo was converted into a Forge-enabled project where a different agent can continue without the original conversation, with real verification evidence. **Achieved**: Agent2 reconstructed state from files + git alone, implemented the two remaining stubs, replaced stub tests, verified green, and updated all context.
+Prove a fresh repo was converted into a Forge-enabled project where a different agent can continue without the original conversation, with real verification evidence. **Achieved**: Agent2 reconstructed state from files + git alone, implemented the two remaining stubs, replaced stub tests, verified green, and updated all context. TASK-010 completed presentation polish, release prep, and independent adoption test.
 
 ## Completed
 
 - `FORGE_SPEC.md` (17 FR / 5 NFR / 6 AC), `.forge/INIT.md`, `rules.md`, `tasks.md`, `state.md`
 - Decisions: ADR-001 (filesystem over DB), ADR-002 (single active agent), ADR-003 (agent-agnostic markdown), ADR-004 (dev repo vs template split — executed 2026-09-05)
-- Skills: testing, security, specification; `taste/preferences.md`; checkpoints 001..008; `AGENTS.md` adapter
-- Git: master HEAD `502e8c5` + `forge-template` branch `a944298` (16 files) — see `git log --oneline -10`, `git branch -v`
+- Skills: testing, security, specification; `taste/preferences.md`; checkpoints 001..009; `AGENTS.md` adapter
+- Git: master + `forge-template` branch (16 files, tag v1.0.0) — see `git log --oneline -10`, `git branch -v`
 - TASK-008: `tools/forge_verify.py` (layout + ID counts + git state + KICKOFF freshness), `tests/test_forge_verify.py` (9 tests)
-- TASK-009 (Agent2): `check_git_state()` + `check_kickoff_freshness()` implemented, wired into `verify()`/`main()`; 2 stub tests replaced with 5 real tests; continuation assessment recorded in `state.md` + `checkpoint-004.md`
+- TASK-009 (Agent2): `check_git_state()` + `check_kickoff_freshness()` implemented, wired into `verify()`/`main()`; 2 stub tests replaced with 5 real tests
+- TASK-010: public README presentation polish, `.forge/releases/v1.0.0.md` release notes, and unrelated real-world adoption test in `/tmp/forge-unrelated-adoption-test` passing cleanly
+
 
 ## Current Work
 

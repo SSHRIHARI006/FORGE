@@ -139,3 +139,25 @@ AC-003, AC-004, AC-005
 
 Verification:
 `python3 -m unittest discover -s tests -t . -v && python3 tools/forge_verify.py` — real output pasted into `state.md` Verification: 9 tests OK, forge_verify.py exits 0 with git/kickoff lines green. During development the new git check correctly flagged the dirty working tree (3 test failures, diagnosed: uncommitted edits); after commit, clean + green. Continuation assessment recorded in `state.md` / `checkpoint-004.md`.
+
+---
+
+## TASK-010
+
+Status: DONE (2026-09-05 — v1.0.0 presentation, release notes, and unrelated adoption test completed)
+
+Goal:
+Finalize Forge v1.0.0 public repository presentation, release preparation, and unrelated real-world adoption verification:
+1. Polish root `README.md` (clean remote-add Option A install command, remove local machine path references, sync file tree and ADR/checkpoint counts).
+2. Prepare GitHub v1.0.0 release notes and publish instructions (`.forge/releases/v1.0.0.md`).
+3. Perform an unrelated real-world adoption test in an isolated workspace (`/tmp/forge-unrelated-adoption-test` with an in-memory inventory service).
+4. Verify everything with `tools/forge_verify.py` and test suite, recording real output.
+
+Requirements:
+FR-005, FR-008, FR-009, FR-014, FR-015
+AC-001, AC-003, AC-004, AC-005
+
+Verification:
+`python3 -m unittest discover -s tests -t . -v && python3 tools/forge_verify.py` — verified 9 tests pass, forge_verify.py clean. Real-world adoption test passed with 16 template files cleanly adopted and zero leaks. Checkpoint-009 recorded.
+
+
