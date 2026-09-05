@@ -80,6 +80,21 @@ Diagnosis: not a code defect — `check_git_state()` correctly reports uncommitt
 TASK-009 final run 2026-09-05 (clean tree at `829658c`) — **current evidence**:
 ```text
 $ python3 -m unittest discover -s tests -t . -v
+Ran 9 tests in 0.021s
+OK
+$ python3 tools/forge_verify.py
+root: /home/shrihari/Desktop/forge
+counts: {'FR': 17, 'NFR': 5, 'AC': 6, 'total': 28} ids_ok=True
+layout: missing_files=[] missing_dirs=[] adrs=4 skills=3 checkpoints=4
+git: present=True clean=True rev=829658c changes=0
+kickoff: ok=True checkpoints_ref=['checkpoint-004.md'] issues=[]
+OK
+$ echo $? → 0
+```
+
+TASK-010 run 2026-09-05 (clean tree at `3e3f269`) — **current evidence**:
+```text
+$ python3 -m unittest discover -s tests -t . -v
 test_git_state_reports_head_and_clean (tests.test_forge_verify.TestAgent2.test_git_state_reports_head_and_clean) ... ok
 test_kickoff_freshness_detects_missing_checkpoint_ref (tests.test_forge_verify.TestAgent2.test_kickoff_freshness_detects_missing_checkpoint_ref) ... ok
 test_kickoff_freshness_detects_stale_git_claim (tests.test_forge_verify.TestAgent2.test_kickoff_freshness_detects_stale_git_claim) ... ok
@@ -90,14 +105,14 @@ test_id_counts (tests.test_forge_verify.TestForgeVerifyAgent1.test_id_counts) ..
 test_required_files_present (tests.test_forge_verify.TestForgeVerifyAgent1.test_required_files_present) ... ok
 test_verify_ok (tests.test_forge_verify.TestForgeVerifyAgent1.test_verify_ok) ... ok
 ----------------------------------------------------------------------
-Ran 9 tests in 0.021s
+Ran 9 tests in 0.034s
 OK
 $ python3 tools/forge_verify.py
 root: /home/shrihari/Desktop/forge
 counts: {'FR': 17, 'NFR': 5, 'AC': 6, 'total': 28} ids_ok=True
-layout: missing_files=[] missing_dirs=[] adrs=4 skills=3 checkpoints=4
-git: present=True clean=True rev=829658c changes=0
-kickoff: ok=True checkpoints_ref=['checkpoint-004.md'] issues=[]
+layout: missing_files=[] missing_dirs=[] adrs=4 skills=3 checkpoints=9
+git: present=True clean=True rev=3e3f269 changes=0
+kickoff: ok=True checkpoints_ref=['checkpoint-004.md', 'checkpoint-005.md', 'checkpoint-009.md'] issues=[]
 OK
 $ echo $? → 0
 ```
