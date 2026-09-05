@@ -78,7 +78,7 @@ $ python3 tools/forge_verify.py
 root: /home/shrihari/Desktop/forge
 counts: {'FR': 17, 'NFR': 5, 'AC': 6, 'total': 28} ids_ok=True
 layout: missing_files=[] missing_dirs=[] adrs=4 skills=3 checkpoints=4
-git: present=True clean=True rev=<COMMIT_SHA> changes=0
+git: present=True clean=True rev=ab7e70e changes=0
 kickoff: ok=True checkpoints_ref=['checkpoint-001.md', 'checkpoint-002.md', 'checkpoint-003.md', 'checkpoint-004.md'] issues=[]
 OK
 $ echo $? → 0
