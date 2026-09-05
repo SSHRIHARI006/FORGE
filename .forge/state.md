@@ -70,7 +70,7 @@ FAIL (exit 1)
 ```
 Diagnosis: not a code defect — `check_git_state()` correctly reports uncommitted edits. Fixed by committing (user-approved).
 
-TASK-009 final run 2026-09-05 (clean tree at `bbcf83d`) — **current evidence**:
+TASK-009 final run 2026-09-05 (clean tree at `829658c`) — **current evidence**:
 ```text
 $ python3 -m unittest discover -s tests -t . -v
 test_git_state_reports_head_and_clean (tests.test_forge_verify.TestAgent2.test_git_state_reports_head_and_clean) ... ok
@@ -89,7 +89,7 @@ $ python3 tools/forge_verify.py
 root: /home/shrihari/Desktop/forge
 counts: {'FR': 17, 'NFR': 5, 'AC': 6, 'total': 28} ids_ok=True
 layout: missing_files=[] missing_dirs=[] adrs=4 skills=3 checkpoints=4
-git: present=True clean=True rev=bbcf83d changes=0
+git: present=True clean=True rev=829658c changes=0
 kickoff: ok=True checkpoints_ref=['checkpoint-004.md'] issues=[]
 OK
 $ echo $? → 0
