@@ -1,9 +1,11 @@
-"""Tests for tools/forge_verify.py — TASK-008 Agent1.
+"""Tests for tools/forge_verify.py — TASK-008 Agent1 + TASK-009 Agent2.
 
 Uses stdlib unittest (no new dependencies per project rules).
-Green now for layout/ID checks; stub tests document TASK-009 remainder.
+Covers layout/ID checks (Agent1) and git-state/KICKOFF-freshness
+checks (Agent2).
 """
 
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -42,16 +44,66 @@ class TestForgeVerifyAgent1(unittest.TestCase):
         self.assertTrue(verify(ROOT)["ok"])
 
 
-class TestAgent2Deferred(unittest.TestCase):
-    """Intentionally incomplete — Agent2 implements these in TASK-009."""
+class TestAgent2(unittest.TestCase):
+    """TASK-009: real assertions for git-state and KICKOFF-freshness checks."""
 
-    def test_git_stub_raises(self):
-        with self.assertRaises(NotImplementedError):
-            check_git_state(ROOT)
+    def test_git_state_reports_head_and_clean(self):
+        git = check_git_state(ROOT)
+        self.assertTrue(git["present"], "expected a git repo at repo root")
+        self.assertRegex(git["rev"], r"^[0-9a-f]{40}$")
+        self.assertTrue(git["clean"], f"unexpected changes: {git['status_lines']}")
 
-    def test_kickoff_stub_raises(self):
-        with self.assertRaises(NotImplementedError):
-            check_kickoff_freshness(ROOT)
+    def test_kickoff_freshness_ok(self):
+        kickoff = check_kickoff_freshness(ROOT)
+        self.assertEqual(kickoff["issues"], [], f"issues: {kickoff['issues']}")
+        self.assertTrue(kickoff["ok"])
+        # Every checkpoint referenced in KICKOFF exists on disk.
+        for name in kickoff["referenced_checkpoints"]:
+            self.assertTrue((ROOT / ".forge/checkpoints" / name).is_file(), name)
+
+    def test_kickoff_freshness_detects_stale_git_claim(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_root = Path(tmp)
+            (tmp_root / ".forge/checkpoints").mkdir(parents=True)
+            (tmp_root / ".forge/checkpoints/checkpoint-001.md").write_text("x")
+            (tmp_root / ".forge/KICKOFF.md").write_text(
+                "No git repo in this checkout. see checkpoint-001.md\n"
+            )
+            (tmp_root / ".forge/tasks.md").write_text(
+                "## TASK-001\nStatus: IN_PROGRESS\n"
+            )
+            result = check_kickoff_freshness(tmp_root)
+            self.assertFalse(result["ok"])
+            self.assertTrue(
+                any("stale 'no git repo'" in i for i in result["issues"]),
+                f"issues: {result['issues']}",
+            )
+
+    def test_kickoff_freshness_detects_missing_checkpoint_ref(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_root = Path(tmp)
+            (tmp_root / ".forge/checkpoints").mkdir(parents=True)
+            (tmp_root / ".forge/KICKOFF.md").write_text(
+                "see checkpoint-099.md\n"
+            )
+            (tmp_root / ".forge/tasks.md").write_text(
+                "## TASK-001\nStatus: IN_PROGRESS\n"
+            )
+            result = check_kickoff_freshness(tmp_root)
+            self.assertFalse(result["ok"])
+            self.assertTrue(
+                any("missing checkpoint" in i for i in result["issues"]),
+                f"issues: {result['issues']}",
+            )
+
+    def test_verify_includes_git_and_kickoff(self):
+        result = verify(ROOT)
+        self.assertIn("git", result)
+        self.assertIn("kickoff", result)
+        self.assertTrue(result["git"]["present"])
+        self.assertTrue(result["git"]["clean"])
+        self.assertEqual(result["kickoff"]["issues"], [])
+        self.assertTrue(result["ok"])
 
 
 if __name__ == "__main__":

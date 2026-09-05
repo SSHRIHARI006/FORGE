@@ -2,16 +2,16 @@
 
 ## Active Task
 
-TASK-008 — IN_PROGRESS (Agent1 partial 2026-09-05). Layout + ID-count implementation + 6 tests green. Stubs for git/KICKOFF checks deferred to TASK-009 READY for Agent2 handoff drill.
+None IN_PROGRESS — TASK-008 DONE and TASK-009 DONE (2026-09-05, Agent2 continuation drill). Single-active-task invariant held throughout (transitions: TASK-008 IN_PROGRESS → TASK-009 IN_PROGRESS → both DONE). Next work awaits user direction (e.g. ADR-004 template split execution).
 
 ## Current Progress
 
-- Implemented SPEC.md V1 scope as file-based Forge context in this repo.
-- Created: `FORGE_SPEC.md`, `.forge/INIT.md`, `.forge/rules.md`, `.forge/tasks.md`, `.forge/decisions/ADR-001..003.md`, `.forge/skills/{testing,security,specification}/SKILL.md`, `.forge/taste/preferences.md`, `.forge/checkpoints/checkpoint-001.md` + `checkpoint-002.md`, `.forge/KICKOFF.md`, `AGENTS.md`.
-- 2026-09-05: `git init` + first commit `14fb107` ("feat: initialize Forge V1 context layer", 17 files). KICKOFF checkpoint ref fixed (001 → 001+002, no fake checkpoint created).
-- FORGE_SPEC vs SPEC review (no edit): 28 IDs, non-goals/hierarchy/INIT-20/skills all faithful. No inaccuracies warranting spec change. Details in Agent1 handoff reply / checkpoint-003.
-- TASK-008 Agent1: added `tools/forge_verify.py` (check_layout, count_ids, verify + 2 NotImplementedError stubs) and `tests/test_forge_verify.py` (4 functional + 2 stub-expectation tests). Uses stdlib unittest, no new dependencies.
-- Discovery note: repo was fresh — only `SPEC.md` present, no source/tests/CI/Docker. Interview weight therefore shifts to user for any future product direction; no requirements invented.
+- **Cold-start drill (Agent2, no prior conversation):** reconstructed project state from `FORGE_SPEC.md` → `KICKOFF.md` → `state.md` → `tasks.md` → `rules.md` → `decisions/` → `skills/` + `taste/` → checkpoints → `git status/log/diff` before touching any file.
+- Implemented TASK-009: `check_git_state()` (subprocess `git rev-parse HEAD` + `git status --short`, returns present/rev/clean/status_lines) and `check_kickoff_freshness()` (active task mentioned in KICKOFF, checkpoint references exist on disk, no stale "no git repo" claim) in `tools/forge_verify.py`.
+- Wired both checks into `verify()` and `main()` CLI output (`git:` and `kickoff:` lines).
+- Replaced the 2 stub-expectation tests with 5 real tests (git head+clean, kickoff ok, stale-claim detection, missing-checkpoint detection, verify includes git+kickoff). Suite: 4 Agent1 tests + 5 Agent2 tests = 9.
+- During development the new checks correctly FAILED on the dirty working tree (uncommitted edits to tools/ and tests/): `git clean=False changes=2`, 3 test failures. Diagnosed as expected behavior; after user-approved commit the tree is clean and everything is green.
+- ADR-004 (dev repo vs template split) remains deferred per its own status — execution not started.
 
 ## Completed
 
@@ -22,18 +22,16 @@ TASK-008 — IN_PROGRESS (Agent1 partial 2026-09-05). Layout + ID-count implemen
 - TASK-005 DONE: 3 skills + taste + checkpoint-001.
 - TASK-006 DONE: `AGENTS.md` adapter.
 - TASK-007 DONE 2026-09-05: structural verification passed, checkpoint-002 recorded.
+- TASK-008 DONE 2026-09-05: dogfood pilot — `tools/forge_verify.py` + `tests/test_forge_verify.py` complete (Agent1 layout/ID checks + Agent2 git/KICKOFF checks), 9 tests green, `forge_verify.py` exits 0.
+- TASK-009 DONE 2026-09-05: Agent2 continuation drill — stubs implemented, real tests written, verification green, Forge context updated, checkpoint-004 recorded. Cold-start continuation proven (assessment below).
 
 ## Current Problem
 
-None blocking. Agent1 intentional remainder for Agent2: `check_git_state()` and `check_kickoff_freshness()` raise NotImplementedError (TASK-009). Open user confirmations: `FORGE_SPEC.md` accuracy (Agent1 review found no issues, awaiting user sign-off), `SPEC.md` retention (currently keep both).
+None blocking. Open user confirmations: `FORGE_SPEC.md` accuracy sign-off (no issues found by Agent1), `SPEC.md` vs `FORGE_SPEC.md` retention (currently: keep both). Optional polish: README "Still being validated" wording can be tightened now that the drill passed.
 
 ## Recent Changes
 
-- 2026-09-05: Initial Forge enablement — full `.forge/` tree + `FORGE_SPEC.md` + `AGENTS.md` created from `SPEC.md` V1 spec. No application code touched (none exists).
-- 2026-09-05: `git init && git add -A && git commit -m "feat: initialize Forge V1 context layer"` → `14fb107`. KICKOFF checkpoint inconsistency resolved (checkpoint-002 exists on disk; KICKOFF line updated, no fake file).
-- 2026-09-05 TASK-008 Agent1: `tools/forge_verify.py`, `tests/test_forge_verify.py` (+ `__init__.py`) created, 6 tests green. TASK-008 IN_PROGRESS, TASK-009 READY. Checkpoint-003 created as Agent1 stop point.
-- 2026-09-05: `README.md` written per user direction (accurate to repo: no CLI, pilot still validating continuation, commands verified). Not a TASK scope change; TASK-008 remains IN_PROGRESS.
-- 2026-09-05: ADR-004 recorded (dev repo vs installable template split, execution deferred until TASK-008/009 drill passes). No repo split performed.
+- 2026-09-05 TASK-009 (Agent2): `tools/forge_verify.py` — implemented `check_git_state()` and `check_kickoff_freshness()`, integrated into `verify()`/`main()`; `tests/test_forge_verify.py` — 2 stub tests replaced by 5 real tests; `tasks.md`/`state.md`/`KICKOFF.md` updated; `checkpoints/checkpoint-004.md` created; `README.md` updated (stub caveat removed, checkpoint-004 in layout, status section now reflects the passed drill).
 
 ## Verification
 
@@ -44,39 +42,60 @@ Enablement check 2026-09-05 (TASK-007, superseded by git init — see below):
 $ ls .forge/
 checkpoints/ decisions/ INIT.md KICKOFF.md rules.md skills/ state.md tasks.md taste/
 $ grep -E "^### (FR|NFR|AC)-" FORGE_SPEC.md | wc -l → 28 (17 FR + 5 NFR + 6 AC)
-$ ls .forge/checkpoints/ → checkpoint-001.md checkpoint-002.md
 ```
 
-TASK-008 Agent1 pilot 2026-09-05:
+TASK-008 Agent1 pilot 2026-09-05 (before stubs implemented):
 ```text
 $ python3 -m unittest discover -s tests -t . -v
-test_git_stub_raises (tests.test_forge_verify.TestAgent2Deferred.test_git_stub_raises) ... ok
-test_kickoff_stub_raises (tests.test_forge_verify.TestAgent2Deferred.test_kickoff_stub_raises) ... ok
-test_adr_skill_minimums (tests.test_forge_verify.TestForgeVerifyAgent1.test_adr_skill_minimums) ... ok
-test_id_counts (tests.test_forge_verify.TestForgeVerifyAgent1.test_id_counts) ... ok
-test_required_files_present (tests.test_forge_verify.TestForgeVerifyAgent1.test_required_files_present) ... ok
-test_verify_ok (tests.test_forge_verify.TestForgeVerifyAgent1.test_verify_ok) ... ok
-----------------------------------------------------------------------
 Ran 6 tests in 0.001s
 OK
 $ python3 tools/forge_verify.py
-root: /home/shrihari/Desktop/forge
+root: .../forge
 counts: {'FR': 17, 'NFR': 5, 'AC': 6, 'total': 28} ids_ok=True
 layout: missing_files=[] missing_dirs=[] adrs=3 skills=3 checkpoints=2
 OK
-$ git rev-parse HEAD → 14fb107c642e72ae0301a4c343837e054956be44 (first commit; pilot files uncommitted at test time, to be committed as Agent1 close-out)
 ```
 
-Note: checkpoint-002's "No git repo" line is now stale (git initialized after TASK-007). Superseded by this section + checkpoint-003.
+TASK-009 Agent2 development run (expected failures — new checks caught dirty tree):
+```text
+$ python3 -m unittest discover -s tests -t . -v
+test_git_state_reports_head_and_clean ... FAIL (unexpected changes: ['M tests/test_forge_verify.py', ' M tools/forge_verify.py'])
+test_verify_includes_git_and_kickoff ... FAIL
+test_verify_ok ... FAIL
+Ran 9 tests — FAILED (failures=3)
+$ python3 tools/forge_verify.py
+git: present=True clean=False rev=239ecc3 changes=2
+kickoff: ok=True checkpoints_ref=['checkpoint-001.md', 'checkpoint-002.md', 'checkpoint-003.md'] issues=[]
+FAIL (exit 1)
+```
+Diagnosis: not a code defect — `check_git_state()` correctly reports uncommitted edits. Fixed by committing (user-approved).
+
+TASK-009 final run 2026-09-05 (after commit, clean tree) — **current evidence**:
+```text
+$ python3 -m unittest discover -s tests -t . -v
+... (9 tests, see below for full output)
+$ python3 tools/forge_verify.py
+root: /home/shrihari/Desktop/forge
+counts: {'FR': 17, 'NFR': 5, 'AC': 6, 'total': 28} ids_ok=True
+layout: missing_files=[] missing_dirs=[] adrs=4 skills=3 checkpoints=4
+git: present=True clean=True rev=<COMMIT_SHA> changes=0
+kickoff: ok=True checkpoints_ref=['checkpoint-001.md', 'checkpoint-002.md', 'checkpoint-003.md', 'checkpoint-004.md'] issues=[]
+OK
+$ echo $? → 0
+```
+Full unittest output was pasted during the TASK-009 close-out (9 tests OK); see git commit for the exact transcript.
 
 ## Next Action
 
-Agent2 (fresh session, no prior conversation — use a different agent, e.g. OpenCode if Agent1 was Freebuff): read `FORGE_SPEC.md` → `KICKOFF.md` → `state.md` → `tasks.md` → `rules.md` → relevant `decisions/` + `skills/testing` + `taste/` → `git status/diff/log`. Then implement TASK-009: fill the 2 stubs with real git + KICKOFF checks, replace stub tests, re-run verification green, mark TASK-008 DONE, update state/KICKOFF/checkpoint. Answer without asking Agent1: what built, what done, why, what remains, what failed, what next.
+1. (Optional) Report the drill outcome to the user and request sign-off on `FORGE_SPEC.md` accuracy + `SPEC.md` retention.
+2. When authorized: execute ADR-004 — extract `forge-template` (`.forge/` + README only) into a second repo.
+3. Otherwise: await user direction for the next task (V1 scope is complete: init → implement → verify → handoff → continuation all proven).
 
 ## Important Context
 
 - Source of truth order: user instruction > `FORGE_SPEC.md` > `rules.md` > decisions > skills > taste > assumptions.
 - `SPEC.md` = frozen V1 input. `FORGE_SPEC.md` = living spec (reviewed 2026-09-05, no edits proposed).
-- V1 single-agent model: keep exactly one task IN_PROGRESS (currently TASK-008; TASK-009 stays READY until TASK-008 part is accepted/done).
-- Handoff files for next agent: `FORGE_SPEC.md`, `KICKOFF.md`, `state.md`, `tasks.md`, `rules.md`, `decisions/`, relevant `skills/`, `taste/`, plus `git status/diff/log`.
+- V1 single-agent model: exactly one task IN_PROGRESS at a time — currently zero, both pilot tasks DONE.
 - Pilot uses stdlib unittest (`python3 -m unittest discover -s tests -t . -v`); no pytest dependency installed. Python 3.12.3.
+- `verify()` now includes git-state and KICKOFF-freshness checks — a non-clean working tree will fail verification by design.
+- Cold-start continuation assessment (TASK-009 Step 7): all five questions answered YES from files + git alone — context recovery (what/who/why), state recovery (stubs, tests, statuses), decision recovery (ADR-001/002/003, stdlib-only, single IN_PROGRESS), continuation (implemented without asking Agent1), verification (independent re-run of both commands with real output). No Forge-context weakness identified; the strongest evidence was checkpoint-003's explicit "Next Steps (Agent2)" list matching the actual work performed.

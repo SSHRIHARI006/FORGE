@@ -86,7 +86,8 @@ Based on `SPEC.md` §2 and this repo today:
     └── checkpoints/
         ├── checkpoint-001.md
         ├── checkpoint-002.md
-        └── checkpoint-003.md
+        ├── checkpoint-003.md
+        └── checkpoint-004.md
 ```
 
 | File | Purpose |
@@ -169,23 +170,23 @@ python3 tools/forge_verify.py
 python3 -m unittest discover -s tests -t . -v
 ```
 
-`tools/forge_verify.py` checks required files/directories exist, counts `FR`/`NFR`/`AC` IDs in `FORGE_SPEC.md` (expected 17/5/6), and counts ADRs/skills/checkpoints. The test suite (stdlib `unittest`, no extra dependencies, Python 3.12) covers the same checks. `check_git_state()` and `check_kickoff_freshness()` are intentionally unimplemented stubs reserved for the TASK-009 continuation exercise.
+`tools/forge_verify.py` checks required files/directories exist, counts `FR`/`NFR`/`AC` IDs in `FORGE_SPEC.md` (expected 17/5/6), counts ADRs/skills/checkpoints, verifies git state (`rev-parse HEAD` + `status --short`), and checks `KICKOFF.md` freshness (active task mentioned, checkpoint references exist, no stale "no git repo" claim). The test suite (stdlib `unittest`, no extra dependencies, Python 3.12) covers all of these. Note: `verify()` fails on a dirty working tree by design.
 
 ## Current V1 status
 
-Transparent status as of 2026-09-05 (`TASK-001`–`TASK-007` DONE, `TASK-008` IN_PROGRESS, `TASK-009` READY):
+Transparent status as of 2026-09-05 (`TASK-001`–`TASK-009` DONE):
 
 Implemented:
 
 - Forge context structure (`.forge/` + `FORGE_SPEC.md` + `AGENTS.md` adapter)
 - Initialization instructions (`.forge/INIT.md`, 20 binding behaviors)
 - Living specification (17 FR / 5 NFR / 6 AC), project rules, tasks, state, kickoff
-- 3 ADRs, 3 skills, taste preferences, 3 checkpoints
-- Structural verification (`tools/forge_verify.py` + tests, green)
+- 4 ADRs, 3 skills, taste preferences, 4 checkpoints
+- Structural verification (`tools/forge_verify.py` + tests, green): layout, ID counts, git state, KICKOFF freshness
 
-Still being validated:
+Validated:
 
-- **Real cross-agent cold-start continuation.** The pilot is set up exactly for this: Agent1 implemented the first half of `tools/forge_verify.py` and stopped at `checkpoint-003`; Agent2 (a different agent, no prior conversation) must implement the two remaining stubs from files + git alone. Until that drill passes, multi-agent continuation is the goal being tested, not a proven result.
+- **Real cross-agent cold-start continuation.** Agent1 implemented the first half of `tools/forge_verify.py` and stopped at `checkpoint-003`; Agent2 (a different agent, no prior conversation) implemented the two remaining stubs and real tests from files + git alone, verified green, and recorded the outcome in `checkpoint-004.md`. The drill passed: a fresh agent reconstructed the project state and continued the work without the previous conversation.
 
 ## Quick start
 

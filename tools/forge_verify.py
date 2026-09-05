@@ -1,13 +1,14 @@
-"""Forge V1 structural verification helper (TASK-008 Agent1 partial).
+"""Forge V1 structural verification helper.
 
-Checks the filesystem convention from SPEC section 2 + FORGE_SPEC.md IDs.
-Git-integration and KICKOFF-freshness checks are intentionally left as
-stubs for Agent2 (see TASK-009).
+Checks the filesystem convention from SPEC section 2 + FORGE_SPEC.md IDs
+(TASK-008 Agent1), plus git state and KICKOFF freshness (TASK-009 Agent2).
+Stdlib only — no dependencies per project rules.
 """
 
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -77,31 +78,113 @@ def count_ids(spec_path: Path) -> dict:
 
 
 def verify(root: Path | None = None) -> dict:
-    """Full Agent1 verification: layout + ID counts + ADR/skill minimums."""
+    """Full verification: layout + ID counts + git state + KICKOFF freshness."""
     root = Path(root) if root else repo_root()
     layout = check_layout(root)
     counts = count_ids(root / "FORGE_SPEC.md")
     ids_ok = all(counts[k] == v for k, v in EXPECTED_COUNTS.items())
     content_ok = layout["adr_count"] >= 3 and layout["skill_count"] >= 3
-    ok = layout["ok"] and ids_ok and content_ok
-    return {"root": str(root), "layout": layout, "counts": counts, "ids_ok": ids_ok, "ok": ok}
+    git = check_git_state(root)
+    kickoff = check_kickoff_freshness(root)
+    ok = layout["ok"] and ids_ok and content_ok and _check_ok(git) and _check_ok(kickoff)
+    return {
+        "root": str(root),
+        "layout": layout,
+        "counts": counts,
+        "ids_ok": ids_ok,
+        "git": git,
+        "kickoff": kickoff,
+        "ok": ok,
+    }
 
 
-def check_git_state(root: Path | None = None) -> dict:  # noqa: ARG001
-    """Agent2 TODO (TASK-009): report rev-parse HEAD + status --short.
+def check_git_state(root: Path | None = None) -> dict:
+    """Report git state at repo root: rev-parse HEAD + status --short.
 
-    Must return e.g. {"rev": "<sha>", "clean": True, "status_lines": [...]}.
+    Returns {"present": bool, "rev": str|"", "clean": bool, "status_lines": [...]}.
+    If git is unavailable or the repo has no commits, ``present`` is False
+    and the other fields are empty defaults (checked, not assumed).
     """
-    raise NotImplementedError("TASK-009: implement git state check via subprocess")
+    root = Path(root) if root else repo_root()
+
+    def _run(*args: str) -> tuple[str, int]:
+        proc = subprocess.run(  # noqa: S603
+            ["git", *args],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        return proc.stdout.strip(), proc.returncode
+
+    rev, rc = _run("rev-parse", "HEAD")
+    if rc != 0:
+        return {"present": False, "rev": "", "clean": False, "status_lines": []}
+    status, _ = _run("status", "--short")
+    status_lines = [line for line in status.splitlines() if line]
+    return {
+        "present": True,
+        "rev": rev,
+        "clean": not status_lines,
+        "status_lines": status_lines,
+    }
 
 
-def check_kickoff_freshness(root: Path | None = None) -> dict:  # noqa: ARG001
-    """Agent2 TODO (TASK-009): verify KICKOFF reflects tasks/state/checkpoints.
+def check_kickoff_freshness(root: Path | None = None) -> dict:
+    """Verify KICKOFF.md reflects the current project state.
 
-    Must confirm: current TASK status mentioned, checkpoint files referenced
-    exist on disk, no stale 'no git repo' claims after git init.
+    Checks that: (1) an in-progress task from tasks.md is mentioned,
+    (2) every checkpoint referenced in KICKOFF exists on disk,
+    (3) KICKOFF contains no stale "no git repo" claim.
+    Returns {"ok": bool, "issues": [str, ...], "referenced_checkpoints": [...]}.
     """
-    raise NotImplementedError("TASK-009: implement KICKOFF freshness check")
+    root = Path(root) if root else repo_root()
+    issues: list[str] = []
+
+    kickoff_path = root / ".forge/KICKOFF.md"
+    tasks_path = root / ".forge/tasks.md"
+    checkpoints_dir = root / ".forge/checkpoints"
+
+    kickoff_text = (
+        kickoff_path.read_text(encoding="utf-8")
+        if kickoff_path.is_file()
+        else ""
+    )
+
+    # 1. KICKOFF mentions the active task (single IN_PROGRESS in V1).
+    if tasks_path.is_file():
+        active = [
+            line for line in tasks_path.read_text(encoding="utf-8").splitlines()
+            if re.match(r"^## TASK-\d+", line)
+            and "IN_PROGRESS" in line
+        ]
+        for task_line in active:
+            task_id = re.match(r"^## (TASK-\d+) ", task_line).group(1)
+            if task_id not in kickoff_text:
+                issues.append(f"KICKOFF does not mention active task {task_id}")
+    elif "TASK-" not in kickoff_text:
+        issues.append("tasks.md missing and KICKOFF mentions no task")
+
+    # 2. Checkpoint references in KICKOFF exist on disk.
+    referenced = sorted(
+        set(re.findall(r"checkpoint-\d+\.md", kickoff_text))
+    )
+    for name in referenced:
+        if not (checkpoints_dir / name).is_file():
+            issues.append(f"KICKOFF references missing checkpoint {name}")
+
+    # 3. No stale "no git repo" claim after git init.
+    if re.search(r"no git repo", kickoff_text, re.IGNORECASE):
+        issues.append("KICKOFF contains stale 'no git repo' claim")
+
+    return {"ok": not issues, "issues": issues, "referenced_checkpoints": referenced}
+
+
+def _check_ok(result: dict) -> bool:
+    """Aggregate ok for git/kickoff checks with sane defaults."""
+    if "present" in result:  # git state
+        return result["present"] and result["clean"]
+    return result["ok"]  # kickoff freshness
 
 
 def main() -> int:
@@ -115,6 +198,23 @@ def main() -> int:
             result["layout"]["adr_count"],
             result["layout"]["skill_count"],
             result["layout"]["checkpoint_count"],
+        )
+    )
+    git = result["git"]
+    print(
+        "git: present={} clean={} rev={} changes={}".format(
+            git["present"],
+            git["clean"],
+            git["rev"][:7] if git["rev"] else "-",
+            len(git["status_lines"]),
+        )
+    )
+    kickoff = result["kickoff"]
+    print(
+        "kickoff: ok={} checkpoints_ref={} issues={}".format(
+            kickoff["ok"],
+            kickoff["referenced_checkpoints"],
+            kickoff["issues"],
         )
     )
     print("OK" if result["ok"] else "FAIL")

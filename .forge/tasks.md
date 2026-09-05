@@ -112,7 +112,7 @@ Verification:
 
 ## TASK-008
 
-Status: IN_PROGRESS (Agent1 partial 2026-09-05 — layout + ID counts done, git/KICKOFF checks deferred to TASK-009)
+Status: DONE (2026-09-05 — Agent1 partial, Agent2 completed remainder via TASK-009)
 
 Goal:
 Dogfood pilot Agent1: create small Python `tools/forge_verify.py` that checks Forge V1 structure (required files present, FR/NFR/AC counts, ADR/skill counts) with `tests/test_forge_verify.py`. Leave git-integration + KICKOFF-freshness checks as stubs for Agent2. Follow BUILD/VERIFY with recorded evidence, then handoff.
@@ -122,13 +122,13 @@ FR-015
 AC-003, AC-004
 
 Verification:
-`python3 -m unittest discover -s tests -v` — must paste real command output into `state.md` before marking DONE. Agent1 stop point: layout/ID tests green, 2 stubs raise NotImplementedError.
+`python3 -m unittest discover -s tests -v` — must paste real command output into `state.md` before marking DONE. Agent1 stop point: layout/ID tests green, 2 stubs raise NotImplementedError. Agent2 close-out: stubs implemented + real tests; full suite green (see `state.md` Verification, 9 tests OK).
 
 ---
 
 ## TASK-009
 
-Status: READY
+Status: DONE (2026-09-05 — Agent2 continuation drill completed)
 
 Goal:
 Dogfood pilot Agent2 (handoff continuation, no prior conversation): implement `check_git_state()` and `check_kickoff_freshness()` stubs in `tools/forge_verify.py`, add real tests replacing the NotImplementedError expectations, re-run verification green, update state/KICKOFF, prove continuation from files + git alone.
@@ -138,4 +138,4 @@ FR-014, FR-015
 AC-003, AC-004, AC-005
 
 Verification:
-`python3 -m unittest discover -s tests -t . -v && python3 tools/forge_verify.py` — paste real output into `state.md`. Then mark TASK-008 DONE (Agent1 part verified) and TASK-009 DONE, or keep single-IN_PROGRESS discipline by completing TASK-008 first.
+`python3 -m unittest discover -s tests -t . -v && python3 tools/forge_verify.py` — real output pasted into `state.md` Verification: 9 tests OK, forge_verify.py exits 0 with git/kickoff lines green. During development the new git check correctly flagged the dirty working tree (3 test failures, diagnosed: uncommitted edits); after commit, clean + green. Continuation assessment recorded in `state.md` / `checkpoint-004.md`.
