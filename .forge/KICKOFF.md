@@ -19,7 +19,7 @@ Prove a fresh repo was converted into a Forge-enabled project where a different 
 - `FORGE_SPEC.md` (17 FR / 5 NFR / 6 AC), `.forge/INIT.md`, `rules.md`, `tasks.md`, `state.md`
 - Decisions: ADR-001 (filesystem over DB), ADR-002 (single active agent), ADR-003 (agent-agnostic markdown), ADR-004 (dev repo vs template split — executed 2026-09-05)
 - Skills: testing, security, specification; `taste/preferences.md`; checkpoints 001..005; `AGENTS.md` adapter
-- Git: master HEAD `536f114` + `forge-template` branch `a944298` (16 files) — see `git log --oneline -10`, `git branch -v`
+- Git: master HEAD `502e8c5` + `forge-template` branch `a944298` (16 files) — see `git log --oneline -10`, `git branch -v`
 - TASK-008: `tools/forge_verify.py` (layout + ID counts + git state + KICKOFF freshness), `tests/test_forge_verify.py` (9 tests)
 - TASK-009 (Agent2): `check_git_state()` + `check_kickoff_freshness()` implemented, wired into `verify()`/`main()`; 2 stub tests replaced with 5 real tests; continuation assessment recorded in `state.md` + `checkpoint-004.md`
 
@@ -36,8 +36,8 @@ Ran 9 tests ... OK
 $ python3 tools/forge_verify.py
 counts: {'FR': 17, 'NFR': 5, 'AC': 6, 'total': 28} ids_ok=True
 layout: missing_files=[] missing_dirs=[] adrs=4 skills=3 checkpoints=5
-git: present=True clean=True rev=<commit> changes=0
-kickoff: ok=True checkpoints_ref=['checkpoint-005.md'] issues=[]
+git: present=True clean=True rev=502e8c5 changes=0
+kickoff: ok=True checkpoints_ref=['checkpoint-004.md', 'checkpoint-005.md'] issues=[]
 OK
 ```
 Template integrity (ADR-004): 16 files, zero dev references (`grep` clean), branch blobs byte-identical to `../forge-template/`, fresh-repo adoption passed.
