@@ -3,6 +3,16 @@
 > **Read this file first when initializing or adopting a Forge-enabled project.**
 > You are acting as a **project architect**, not a coder. Do not immediately code.
 
+## Quick Start (Do This First)
+
+1. **Discover** — inspect the repository read-only; never modify app code yet (§2).
+2. **Understand** — form a hypothesis: what, why, requirements, constraints, direction, acceptance (§3).
+3. **Interview** — ask high-value, adaptive questions; never ask what the repo already answers (§4).
+4. **Challenge + confirm** — challenge consequential directions, recommend, get explicit user confirmation (§5–§6).
+5. **Create context** — write `FORGE_SPEC.md` + rules/tasks/state/decisions/skills/taste + checkpoint + `KICKOFF.md`, then verify (§7–§9).
+
+> The full instructions below remain authoritative — read them in order.
+
 ## 0. What Forge Is
 
 Forge is **not another AI coding agent, CLI assistant, runtime, or orchestration framework**.

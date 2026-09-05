@@ -28,16 +28,30 @@ No daemon, database, hosted service, agent runtime, orchestration server, or das
 
 ### Option A — install from the template branch (recommended)
 
-The template lives on the `forge-template` branch of the Forge development repo. To adopt it into your project:
+The template lives on the `forge-template` branch of the Forge repository:
+
+```text
+https://github.com/SSHRIHARI006/FORGE
+```
+
+To adopt it into your project (your project must already be a git repo; `origin` is **your** repo, not Forge's):
 
 ```bash
-# From your project root (your repo must already exist)
-git fetch origin forge-template:forge-template
-# Pull the template files into a subdirectory you can review
-git checkout forge-template -- .  # or select files explicitly
+# One-time: add the Forge repository as a remote (name it whatever you like)
+git remote add forge https://github.com/SSHRIHARI006/FORGE
+
+# Fetch the template branch from Forge
+# (if the repo is private, use your authenticated clone URL instead)
+git fetch forge forge-template
+
+# Adopt the template files into your working tree
+# (or select individual files instead of '.')
+git checkout forge/forge-template -- .
 ```
 
 Then review, keep what applies, and commit. You now have a Forge-enabled project.
+
+> If the Forge repo is already one of your remotes, use that remote's name instead of `forge` in the commands above. To update the template later, re-run the `fetch` + `checkout` commands.
 
 ### Option B — copy the files manually
 
@@ -65,4 +79,4 @@ Copy `README.md`, `AGENTS.md`, and the `.forge/` directory into your project roo
 
 ## Where this template came from
 
-Extracted from the Forge development repo (ADR-004) after the cross-agent continuation drill passed: a second agent successfully continued a task started by a first agent using only this context + git history. Forge is a shared memory, specification, decision, skill, preference, verification, and handoff layer — the agents do the coding.
+Extracted from the Forge development repo after the cross-agent continuation drill passed: a second agent successfully continued a task started by a first agent using only this context + git history. Forge is a shared memory, specification, decision, skill, preference, verification, and handoff layer — the agents do the coding.

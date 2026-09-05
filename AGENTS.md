@@ -12,7 +12,7 @@
 
 Read in order:
 
-1. `FORGE_SPEC.md` (living spec — what/why/requirements/constraints)
+1. `FORGE_SPEC.md` (living spec — what/why/requirements/constraints; **if present** — before the project has been initialized it does not exist yet, so start with `.forge/INIT.md` instead)
 2. `.forge/KICKOFF.md` (2-minute resume: task, done, broken, verified, next)
 3. `.forge/state.md` (full current state + verification evidence)
 4. `.forge/tasks.md` (active task + verification command)

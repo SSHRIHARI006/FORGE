@@ -21,7 +21,7 @@ None — pre-initialization state.
 
 ## Recent Changes
 
-- Template installed from the Forge `forge-template` branch (ADR-004 extract).
+- Template installed from the Forge `forge-template` branch.
 
 ## Verification
 
