@@ -51,12 +51,12 @@ None. Open user confirmations: sign-off on `FORGE_SPEC.md` accuracy (no issues f
 - ADR-001: filesystem/markdown convention, no DB/runtime in V1.
 - ADR-002: one active agent at a time; file-based handoff via KICKOFF/state/tasks.
 - ADR-003: agent-agnostic markdown; `AGENTS.md` is a thin adapter, Forge is source of truth.
-- ADR-004: executed 2026-09-05 — clean template on the `forge-template` branch (16 files: README + AGENTS + `.gitignore` + sanitized `.forge/`); adoption procedure verified in a fresh repo.
+- ADR-004: executed 2026-09-05 — clean template on the `forge-template` branch (16 files: README + AGENTS + `.gitignore` + sanitized `.forge/`); adoption procedure verified in a fresh repo; branch pushed to origin (`a944298`).
 - Pilot stays dependency-free (stdlib unittest; no pytest).
 
 ## Next Action
 
-1. On user go-ahead: `git push origin forge-template` (currently local only).
+1. ~~Push forge-template~~ — done (remote = `a944298`). Note: local master is ahead of remote master (`239ecc3`); pushing master is a separate user decision.
 2. Get sign-off on spec accuracy + `SPEC.md` retention.
 3. Dogfood the template in a real project (per template README Option A); feed issues back to dev.
 

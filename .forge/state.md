@@ -11,7 +11,7 @@ None IN_PROGRESS — TASK-008/009 DONE (2026-09-05); ADR-004 executed (template 
 - Wired both checks into `verify()` and `main()` CLI output (`git:` and `kickoff:` lines).
 - Replaced the 2 stub-expectation tests with 5 real tests (git head+clean, kickoff ok, stale-claim detection, missing-checkpoint detection, verify includes git+kickoff). Suite: 4 Agent1 tests + 5 Agent2 tests = 9.
 - During development the new checks correctly FAILED on the dirty working tree (uncommitted edits to tools/ and tests/): `git clean=False changes=2`, 3 test failures. Diagnosed as expected behavior; after user-approved commit the tree is clean and everything is green.
-- ADR-004 executed 2026-09-05: created clean `forge-template` branch (commit `a944298`, 16 files) + local mirror `../forge-template/`; adoption verified in a fresh repo at `/tmp/forge-adoption-test`; full details in `checkpoint-005.md`.
+- ADR-004 executed 2026-09-05: created clean `forge-template` branch (commit `a944298`, 16 files) + local mirror `../forge-template/`; adoption verified in a fresh repo at `/tmp/forge-adoption-test`; branch pushed to origin 2026-09-05; full details in `checkpoint-005.md`.
 
 ## Completed
 
@@ -98,7 +98,7 @@ $ echo $? → 0
 
 ## Next Action
 
-1. On user go-ahead: `git push origin forge-template` (branch is currently local only).
+1. ~~Push forge-template~~ — done (remote refs/heads/forge-template = `a944298`). Note: local master is ahead of remote master (`239ecc3`); pushing master is a separate user decision.
 2. Get sign-off on `FORGE_SPEC.md` accuracy + `SPEC.md` retention.
 3. Dogfood the template in a real project (template README Option A); feed issues back to dev.
 

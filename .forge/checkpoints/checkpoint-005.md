@@ -53,12 +53,12 @@ Fresh-repo adoption: fetch + checkout forge-template -- . → 16 files, git stat
 
 ## Known Problems
 
-- `forge-template` branch not yet pushed to `origin` (pending user go-ahead). Until pushed, `git fetch origin forge-template` fails for adopters.
+- ~~`forge-template` branch not yet pushed~~ — **pushed 2026-09-05** (remote refs/heads/forge-template = `a944298`). Adopters can now `git fetch origin forge-template` directly.
 - Template naming/location (`forge-template` branch) may evolve once the public install flow is exercised.
 
 ## Next Steps
 
-1. On user go-ahead: `git push origin forge-template`.
-2. Document the public install flow (repo visibility/branch name) in the dev README.
-3. Dogfood: use the template in a real project per README Option A; feed issues back to dev (`INIT.md`, context quality).
-4. If the `.forge/` contract changes materially, update the template branch (sanitization re-check required).
+1. ~~Push branch~~ — done (`git push origin forge-template` → remote refs/heads/forge-template = `a944298`).
+2. Dogfood: use the template in a real project per README Option A; feed issues back to dev (`INIT.md`, context quality).
+3. If the `.forge/` contract changes materially, update the template branch (sanitization re-check required).
+4. Note: local master is ahead of remote master (remote master = `239ecc3`); pushing master is a separate decision for the user.
